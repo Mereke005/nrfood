@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Смена — Аблайхана / Елемесова (Neon)</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="card">
+    <!-- AUTH VIEW -->
+    <div id="authView" class="box">
+      <h1>Запись смен — Аблайхана / Елемесова</h1>
+
+      <div class="field"><label>Логин</label><input id="authLogin" type="text" placeholder="Введите логин"></div>
+      <div class="field"><label>Пароль</label><input id="authPass" type="password" placeholder="Пароль"></div>
+      <div class="field"><label>Роль</label>
+        <select id="authRole">
+          <option value="cook" selected>Повар</option>
+          <option value="chef">Шеф-повар</option>
+        </select>
+        <div class="muted">Если шеф уже зарегистрирован — второй шеф зарегистрироваться не сможет.</div>
+      </div>
+
+      <div class="row" style="margin-top:8px">
+        <button id="btnLogin">Войти</button>
+        <button id="btnRegister" class="ghost">Регистрация</button>
+      </div>
+
+      <div class="muted" style="margin-top:10px">Роль выбирается при регистрации. Пароли хранятся в виде SHA-256 хэша.</div>
+    </div>
+
+    <!-- APP VIEW -->
+    <div id="appView" style="display:none">
+      <div class="topbar">
+        <div class="user">
+          <div class="avatar">🍳</div>
+          <div>
+            <div id="welcome" class="bold">Привет</div>
+            <div id="roleLabel" class="muted">Роль: —</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="exportBtnTop" class="ghost small">⬇️ Экспорт мои</button>
+          <button id="exportAllBtn" class="ghost small" style="display:none">⬇️ Экспорт все (шеф)</button>
+          <button id="logoutBtn" class="danger small">Выйти</button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <main>
+          <div class="panel">
+            <div class="section-title">Добавить / изменить смену</div>
+
+            <div class="field"><label>Имя повара</label><input id="name" type="text" placeholder="Иван Иванов"></div>
+
+            <div class="row">
+              <div class="field col"><label>Дата</label><input id="date" type="date"></div>
+              <div class="field col"><label>Время начала</label><input id="start" type="time"></div>
+              <div class="field col"><label>Время конца</label><input id="end" type="time"></div>
+            </div>
+
+            <div class="field"><label>Точка</label>
+              <div class="locs">
+                <div class="loc active" data-loc="Аблайхана">Аблайхана</div>
+                <div class="loc" data-loc="Елемесова">Елемесова</div>
+              </div>
+            </div>
+
+            <div class="field"><label>Примечание</label><textarea id="notes" rows="2" placeholder="Например: замена"></textarea></div>
+
+            <div class="row">
+              <button id="saveBtn">💾 Сохранить</button>
+              <button id="clearMyBtn" class="ghost">Очистить мои смены</button>
+              <button id="importBtn" class="ghost">⬆️ Импорт JSON</button>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-top:12px">
+            <div class="section-title">Список (локально)</div>
+            <div id="list" class="list"></div>
+          </div>
+        </main>
+
+        <aside>
+          <div class="panel stats">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div class="section-title">Статистика</div>
+              <div class="muted">Итого: <span id="total-hours">0</span> ч</div>
+            </div>
+
+            <div style="margin-top:10px">
+              <div style="font-weight:700;color:var(--neon-a)">Аблайхана</div>
+              <pre id="ab-list" class="stat-box">—</pre>
+              <div style="font-weight:700;color:var(--neon-e);margin-top:8px">Елемесова</div>
+              <pre id="el-list" class="stat-box">—</pre>
+            </div>
+
+            <div id="adminPanel" style="margin-top:12px; display:none;">
+              <div class="section-title">Панель шефа — все повара</div>
+              <div id="usersList"></div>
+              <div style="margin-top:8px"><button id="refreshStatsBtn" class="ghost">Обновить статистику</button></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal root -->
+  <div id="modalRoot"></div>
+
+  <input id="fileInput" type="file" accept=".json,.csv" style="display:none" />
+
+  <script src="script.js"></script>
+</body>
+</html>
